@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  h1= title
+  #wrapper
+   - var  datas = JSON.parse(data);
+    for doc in datas
+     div(class="category")
+      p(id="js_error_#{doc._id}")
+      div(id="category_#{doc._id}")
+       h3 #{doc.cat_name}
+       if(typeof doc.links != 'undefined')
+        for link, key in doc.links
+         p(class="favorites")
+          a(href="#{link.url}" target="_blank") #{link.name} 
+          a(href="#" class="editFav" data-_id="#{doc._id}" data-name="#{link.name}" data-url="#{link.url}" data-id_link="#{link.id}" style="display:none;") Edit
+          a(href="#" class="deleteFav" data-_id="#{doc._id}" data-id="#{link.id}" style="display:none;") Delete
+       a(href="#" class="addFavorites" data-_id="#{doc._id}") +
+      div(id="forms_#{doc._id}" style="display: none" class="formBlock form-style-6")
+       h1 Favorites
+        a(href="#" class="close" data-_id="#{doc._id}") x
+       form(id="form_#{doc._id}" data-id="#{doc._id}" class="listOfForms" method="post")
+        p 
+         input(type="text" placeholder="Favorite" id="favorite_name_#{doc._id}")
+        p
+         input(type="text" placeholder="url" id="url_#{doc._id}")
+        p
+         input(type="submit" id="submit")
+
+   .category
+     a(href="#" id="add" class="addCategory") +
+     p(id="js_error")
+       #form_block(style="display:none" class="formBlock form-style-6")        
+        h1 Category 
+         a(href="#" id="close") x
+        form(id="category_form" method="post")
+         p 
+          input(type="text" placeholder="Category Name" id="category_name")
+         p
+          input(type="submit" id="submit")
+
