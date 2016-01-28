@@ -38,8 +38,8 @@ router.post('/save', function (req, res)
 			.select('links')
 			.exec(function(err, docs)
 			{	
-				var links = JSON.parse(JSON.stringify(docs.links));				
-				data.id = (links.length > 0) ? (links.length + 1) : 1;
+				var links = JSON.parse(JSON.stringify(docs.links));	
+				data.id = (links.length > 0) ? (links[links.length - 1].id + 1) : 1;
 
 				User.findByIdAndUpdate(req.body._id, {$push: {"links": data}},
 				{safe: true, upsert: true, new: true},

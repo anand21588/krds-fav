@@ -10,8 +10,8 @@ block content
       div(id="category_#{doc._id}")
        h3 #{doc.cat_name}
        if(typeof doc.links != 'undefined')
-        for link, key in doc.links
-         p(class="favorites")
+        for link in doc.links
+         p(class="favorites" id="fav_#{link.id}_#{doc._id}")
           a(href="#{link.url}" target="_blank") #{link.name} 
           a(href="#" class="editFav" data-_id="#{doc._id}" data-name="#{link.name}" data-url="#{link.url}" data-id_link="#{link.id}" style="display:none;") Edit
           a(href="#" class="deleteFav" data-_id="#{doc._id}" data-id="#{link.id}" style="display:none;") Delete
@@ -27,7 +27,7 @@ block content
         p
          input(type="submit" id="submit")
 
-   .category
+   .category.add
      a(href="#" id="add" class="addCategory") +
      p(id="js_error")
        #form_block(style="display:none" class="formBlock form-style-6")        

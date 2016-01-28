@@ -133,4 +133,5 @@ body > h1 {
 .favorites:hover > a + a {
 	display: inline-block !important;
 	float: right;
+	padding-right: 10px;
 }

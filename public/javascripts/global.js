@@ -41,8 +41,27 @@ List.prototype.insertData = function (id)
 		data.id = _this.id_link;
 
 	$.post('/users/save', data).done(function (response)
-	{
-		console.log(response);
+	{		
+		if(_this.id_link > 0)
+		{
+			var ele = $('#fav_'+_this.id_link+'_'+id+' > a').eq(0);
+			ele.html(data.name);
+			ele.attr('href', data.url);
+		}
+		else
+		{
+			var fav = $('#fav_temp').html();
+			
+			fav = fav.replace(/\{name\}/g, data.name);
+			fav = fav.replace(/\{url\}/g, data.url);
+			fav = fav.replace(/\{_id\}/g, id);
+			fav = fav.replace(/\{id\}/g, response.id);
+
+			$('#category_'+id).append(fav);			
+		}
+		
+		$('#favorite_name_' + id+', #url_'+ id).val('');
+		$('#forms_'+id+', #category_'+id).toggle();
 	});
 };
 
@@ -75,8 +94,14 @@ List.prototype.insertCategory = function ()
 	{
 		if(response._id)
 		{
+			var category = $('#category_temp').html();
+			
+			category = category.replace(/\{cat_name\}/g, $('#category_name').val());
+			category = category.replace(/\{_id\}/g, response._id);
+			
+			$(category).insertBefore('.add');
 			$('#category_name').val('');
-			$('.close').click();
+			$('#form_block, #add').toggle();
 		}
 	});
 };
@@ -91,6 +116,8 @@ List.prototype.deleteFav = function (_id, id)
 	$.post('/users/deleteFav', {_id: _id, id: id}).done(function (response)
 	{
 		console.log(response);
+		if(response.error === 0)
+			$('#fav_'+id+'_'+_id).remove();
 	});
 };
 
@@ -121,26 +148,26 @@ $(document).ready(function ()
 		return false;
 	});
 
-	$('.listOfForms').submit(function ()
+	$('#wrapper').delegate('.listOfForms', 'submit', function ()
 	{
 		list.insertData($(this).data('id'));
 		return false;
 	});
 
-	$('#category_form').submit(function ()
+	$('#wrapper').delegate('#category_form', 'submit', function ()
 	{
 		list.insertCategory();
 		return false;
 	});
 	
-	$('.deleteFav').click(function(e)
+	$('#wrapper').delegate('.deleteFav', 'click', function(e)
 	{
 		e.preventDefault();
 		list.deleteFav($(this).data('_id'), $(this).data('id'));
 		return false;
 	});
 
-	$('.addFavorites, .close, .editFav').click(function (e) 
+	$('#wrapper').delegate('.addFavorites, .close, .editFav', 'click', function (e) 
 	{
 		e.preventDefault();
 		var id = $(this).data('_id'), name = $(this).data('name'), url = $(this).data('url');

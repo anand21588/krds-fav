@@ -8,3 +8,24 @@ html
     block content
     script(src='/javascripts/jquery.min.js')
     script(src='/javascripts/global.js')
+    script(type='text/html' id='category_temp')
+     div(class="category")
+      p(id="js_error_{_id}")
+      div(id="category_{_id}")
+       h3 {cat_name}       
+       a(href="#" class="addFavorites" data-_id="{_id}") +
+      div(id="forms_{_id}" style="display: none" class="formBlock form-style-6")
+       h1 Favorites
+        a(href="#" class="close" data-_id="{_id}") x
+       form(id="form_{_id}" data-id="{_id}" class="listOfForms" method="post")
+        p 
+         input(type="text" placeholder="Favorite" id="favorite_name_{_id}")
+        p
+         input(type="text" placeholder="url" id="url_{_id}")
+        p
+         input(type="submit" id="submit")
+    script(type='text/html' id='fav_temp')
+     p(class="favorites" id="fav_{id}_{_id}")
+      a(href="{url}" target="_blank") {name} 
+      a(href="#" class="editFav" data-_id="{_id}" data-name="{name}" data-url="{url}" data-id_link="{id}" style="display:none;") Edit
+      a(href="#" class="deleteFav" data-_id="{_id}" data-id="{id}" style="display:none;") Delete
